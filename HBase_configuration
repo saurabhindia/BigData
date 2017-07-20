@@ -1,0 +1,60 @@
+INSTALLATION OF HBASE
+
+> sudo apt-get update
+> sudo apt-get upgrade
+
+Download the Hbase from the link  http://www-us.apache.org/dist/hbase/stable/
+Create a directory 
+> cd  /usr/local
+> sudo mkdir hbase
+Paste the path 
+> sudo mv '/home/****/Desktop/hbase-1.2.6' /usr/local/hbase/
+
+Now open .bashrc file and paste the code
+> sudo gedit .bashrc
+export HBASE_HOME=/usr/local/hbase/hbase-1.2.6
+export PATH=$PATH:$HBASE_HOME/bin
+> source .bashrc
+
+Go to hbase conf file cd /usr/local/hbase/apache-hbase/conf
+Open the hbase-env.sh and paste the following code.
+> sudo gedit hbase-env.sh
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export HBASE_REGIONSERVERS=/usr/local/hbase/hbase-1.2.6/conf/regionservers
+export HBASE_MANAGES_ZK=true
+
+Open the file hbase-site.xml  and paste the following code
+> sudo gedit hbase-site.xml
+<configuration>
+<property>
+<name>hbase.rootdir</name>
+<value>hdfs://localhost:9000/hbase</value>
+</property>
+<property>
+<name>hbase.cluster.distributed</name>
+<value>true</value>
+</property>
+<property>
+<name>hbase.zookeeper.quorum</name>
+<value>localhost</value>
+
+</property>
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+<property>
+<name>hbase.zookeeper.property.clientPort</name>
+<value>2181</value>
+</property>
+<property>
+<name>hbase.zookeeper.property.dataDir</name>
+<value>/usr/local/hbase/hbase-1.2.6/zookeeper</value>
+</property>
+</configuration>
+
+
+Finally if Hbase is installed successfully then you got the following result.
+5378 HQuorumPeer
+5572 HRegionServer
+6765 Jps
