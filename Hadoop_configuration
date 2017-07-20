@@ -1,0 +1,114 @@
+HADOOP INSTALLATION and CONFIGURATION
+
+> sudo apt-get update
+> sudo apt-get upgrade
+
+JAVA VERSION
+Add webupd8team Java PPA repository in the system
+> sudo add-apt-repository ppa:webupd8team/java
+Then Install Java, if not installed
+> sudo apt-get install oracle-java8-installer
+Now check Java version and if it show we are in right path.
+
+> sudo apt-get update
+Now,
+We have required ssh key for security. SSH Keys can allow you to connect to a server, or multiple servers, without having to remember or enter your password for each system.
+
+> ssh-keygen -t rsa
+> cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+> chmod 0600 ~/.ssh/authorized_keys
+> ssh localhost
+
+Now Download hadoop from the given link
+http://hadoop.apache.org/releases.html
+Now download the latest version and extract it. And then set a path like
+> sudo mv '/home/****/Desktop/hadoop-2.7.0' /usr/local/hadoop
+
+Open the file and paste the following codes
+> sudo gedit .bashrc 
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+
+
+Now save the file and run the command
+> source .bashrc
+
+Now go to the hadoop file cd /usr/local/hadoop/ete/hadoop
+Then open the file
+> sudo gedit hadoop-env.sh
+Open the file and save the java path 
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+Now open the core-site.xml
+> sudo gedit core-site.xml
+And paste the following code
+<configuration>
+<property>
+<name>fs.defaultFS</name>
+<value>hdfs://localhost:9000</value>
+</property>
+</configuration>
+
+Now open the file hdfs-site.xml
+> sudo gedit hdfs-site.xml
+<configuration>
+<property>
+<name>dfs.replication</name>
+<value>1</value>		// here we can increase replication according to our needs
+</property>
+</configuration>
+
+Now open mapred-site.xml.template and paste the code.
+> sudo gedit mapred-site.xml.template
+<configuration>
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+</configuration>
+
+
+
+Now open the file yarn-site.xml and paste the code
+> sudo gedit yarn-site.xml
+<configuration>
+<property>
+<name>yarn.nodemanager.aux-services</name>
+<value>mapreduce_shuffle</value>
+</property>
+</configuration>
+
+Now go to the cd ~ mode
+> hdfs namenode -format
+
+Then go to cd /usr/local/hadoop
+> start-dfs.sh
+> start-yarn.sh
+> jps
+
+If you will got the output after jps then your hadoop is start. 
+4816 SecondaryNameNode
+5221 Jps
+5014 ResourceManager
+4601 DataNode
+4447 NameNode
+5151 NodeManager
+
+Now open the browser and type 
+localhost:8080
+localhost:50070
+
+if you able to find the page, then hadoop is configured successfully.
+
+
+
+    
+
